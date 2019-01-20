@@ -3,11 +3,6 @@ const mongodb = require("mongodb");
 
 const router = express.Router();
 
-// admin name - neur0
-// admin pwd - tallest123
-
-// mongodb://<dbuser>:<dbpassword>@ds153815.mlab.com:53815/quote_generator
-
 // GET
 router.get("/", async (req, res) => {
   const quotes = await loadQuotesCollection();
@@ -19,7 +14,8 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const quotes = await loadQuotesCollection();
   await quotes.insertOne({
-    quote: req.body.quote,
+    quote: req.body.text,
+    whoSaid: req.body.whoSaid,
     createdAt: new Date()
   });
 
@@ -29,7 +25,7 @@ router.post("/", async (req, res) => {
 // DELETE
 router.delete("/:id", async (req, res) => {
   const quotes = await loadQuotesCollection();
-  await quotes.deleteOne({ _id: new mondodb.ObjectID(req.params.id) });
+  await quotes.deleteOne({ _id: new mongodb.ObjectID(req.params.id) });
   res.status(200).send();
 });
 
